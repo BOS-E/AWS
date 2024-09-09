@@ -1,8 +1,15 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Resources:
-  inboundbucket:
+  MyS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: inbound bucket
-      VersionConfiguration:
+      BucketName: !Sub "my-github-actions-bucket-${AWS::AccountId}-${AWS::Region}"
+      VersioningConfiguration:
         Status: Enabled
+      Tags:
+        - Key: Environment
+          Value: Production
+Outputs:
+  BucketName:
+    Description: "The name of the S3 bucket"
+    Value: !Ref MyS3Bucket
