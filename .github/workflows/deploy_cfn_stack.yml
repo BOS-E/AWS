@@ -28,6 +28,5 @@ jobs:
         aws cloudformation deploy \
           --stack-name $STACK_NAME \
           --template-file $TEMPLATE_FILE
-        # --capabilities CAPABILITY_NAMED_IAM
 
         echo "CloudFormation stack $STACK_NAME deployed!"
