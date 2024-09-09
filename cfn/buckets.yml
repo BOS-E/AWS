@@ -1,0 +1,7 @@
+Resources:
+  inboundbucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: inbound bucket
+      VersionConfiguration:
+        Status: Enabled
