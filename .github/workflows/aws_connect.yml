@@ -1,2 +1,0 @@
-name: Deploy aws cfn stack
-on: workflow_dispatch
