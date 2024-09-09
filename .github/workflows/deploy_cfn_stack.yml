@@ -19,7 +19,7 @@ jobs:
     - name: Deploy CloudFormation Stack
       run: |
         STACK_NAME=my-s3-bucket-stack
-        TEMPLATE_FILE=cloudformation/s3-bucket.yml
+        TEMPLATE_FILE=cfn/buckets.yml
         
         # Validate the CloudFormation template
         aws cloudformation validate-template --template-body file://$TEMPLATE_FILE
@@ -27,7 +27,7 @@ jobs:
         # Create or update the CloudFormation stack
         aws cloudformation deploy \
           --stack-name $STACK_NAME \
-          --template-file $TEMPLATE_FILE \
-          --capabilities CAPABILITY_NAMED_IAM
+          --template-file $TEMPLATE_FILE
+        # --capabilities CAPABILITY_NAMED_IAM
 
         echo "CloudFormation stack $STACK_NAME deployed!"
