@@ -22,4 +22,4 @@ jobs:
 
     - name: Upload file to S3
       run: |
-        aws s3 cp cfn/caesar_cipher.py s3://${{ secrets.AWS_S3_BUCKET }}/ --region us-east-1
+        aws s3 cp caesar_cipher.py s3://${{ secrets.AWS_S3_BUCKET }}/ --region us-east-1
