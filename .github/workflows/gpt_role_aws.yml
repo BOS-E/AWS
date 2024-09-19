@@ -1,0 +1,21 @@
+name: Upload File to S3
+
+on: push
+
+jobs:
+  upload-to-s3:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: arn:aws:iam::975050260182:role/s3-access-role-for-github
+        aws-region: us-east-1  # Change to your AWS region
+
+    - name: Upload file to S3
+      run: |
+        aws s3 cp caesar_cipher.py s3://${{ secrets.AWS_S3_BUCKET }}/ --region us-east-1
