@@ -1,7 +1,8 @@
 name: Upload File to S3
 
 on: push
-
+permissions:
+  id-token: write
 jobs:
   upload-to-s3:
     runs-on: ubuntu-latest
