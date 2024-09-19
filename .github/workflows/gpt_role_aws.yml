@@ -1,6 +1,6 @@
-name: Upload File to S3
+name: Upload File to S3 via establishing iam role
 
-on: push
+on: workflow_dispatch
 permissions:
   id-token: write
 jobs:
