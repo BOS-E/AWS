@@ -1,9 +1,6 @@
-name: Upload File to S3
+name: Upload File to S3 via establishing connect through creds
 
-on:
-  push:
-    branches:
-      - main  # Trigger on push to the 'main' branch
+on: workflow_dispatch
 
 jobs:
   upload-to-s3:
