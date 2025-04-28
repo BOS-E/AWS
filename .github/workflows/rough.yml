@@ -1,36 +1,49 @@
-name: SAM Deploy Workflow
+name: Deploy SAM Stack
 
 on: workflow_dispatch
 
 jobs:
-  deploy:
+  deploy-sam:
     runs-on: ubuntu-latest
-
     steps:
-      # Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
-      # Set up AWS credentials (using GitHub secrets)
-      - name: Set up AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1 # Change to your region
 
-      # Install SAM CLI
-      - name: Install SAM CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip
-          pip3 install aws-sam-cli
+    # Install SAM CLI (if not installed already)
+    - name: Install SAM CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip
+        pip3 install aws-sam-cli
 
-      # Build the SAM application (template located in cfn-scripts/)
-      - name: Build SAM application
-        run: sam build --template cfn/template.yaml
+    # Define the template file path as a global variable
+    - name: Set template file path
+      run: echo "TEMPLATE_FILE=cfn/buckets.yml" >> $GITHUB_ENV  # Update path if template is in a different folder
 
-      # Deploy the SAM application (template located in cfn-scripts/)
-      - name: Deploy SAM application
-        run: |
-          sam deploy --no-fail-on-empty-changeset --capabilities CAPABILITY_IAM --region ap-south-1 --template-file cfn/template.yaml --stack-name my-github-actions-stack
+    # Build the SAM application
+    - name: Build SAM application
+      run: sam build --template ${{ env.TEMPLATE_FILE }}
+
+    # Deploy the SAM application
+    - name: Deploy SAM application
+      run: |
+        STACK_NAME=my-s3-bucket-stack-sam
+        
+        # Validate the SAM/CloudFormation template
+        aws cloudformation validate-template --template-body file://${{ env.TEMPLATE_FILE }}
+
+        # Deploy the SAM application (CloudFormation stack deployment)
+        sam deploy \
+          --stack-name $STACK_NAME \
+          --template-file ${{ env.TEMPLATE_FILE }} \
+          --capabilities CAPABILITY_IAM \
+          --region ap-south-1
+
+        echo "SAM stack $STACK_NAME deployed!"
