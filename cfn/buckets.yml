@@ -4,11 +4,7 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub "my-github-actions-bucket-${AWS::AccountId}-${AWS::Region}"
-      VersioningConfiguration:
-        Status: Enabled
-      Tags:
-        - Key: Environment
-          Value: Production
+
 Outputs:
   BucketName:
     Description: "The name of the S3 bucket"
