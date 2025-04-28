@@ -3,7 +3,7 @@ Resources:
   MyS3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "my-github-actions-bucket-${AWS::AccountId}-${AWS::Region}"
+      BucketName: !Sub "my-github-actions-bucket-${AWS::AccountId}-${AWS::Region}-new"
 
 Outputs:
   BucketName:
